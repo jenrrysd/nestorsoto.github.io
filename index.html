@@ -1,2 +1,119 @@
-<h1>HOLA ESTE ES MI PAGINA WEB EN GITHUB</h1>
+<!DOCTYPE html>
+<html lang="es">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Mi Página Web Personal</title>
+    <link rel="stylesheet" href="style.css">
+</head>
+<body>
+    <header>
+        <h1>Mi Sitio Web Personal</h1>
+        <p>Un espacio para compartir ideas y experiencias</p>
+    </header>
+
+    <main class="container">
+        <section class="imagen-destacada">
+            <h2>Imagen del Día</h2>
+            <div class="imagen-contenedor">
+                <img src="https://images.unsplash.com/photo-1506744038136-46273834b3fb" alt="Paisaje natural con montañas y lago" id="imagen-principal">
+                <div class="descripcion-imagen">
+                    <p>Un hermoso paisaje natural que nos recuerda la importancia de conservar nuestro medio ambiente.</p>
+                </div>
+            </div>
+        </section>
+
+        <section class="lectura">
+            <h2>Reflexiones sobre la Naturaleza</h2>
+            <div class="contenido-lectura">
+                <p>La naturaleza siempre ha sido una fuente de inspiración para la humanidad. Desde los primeros poetas hasta los científicos modernos, todos han encontrado en el mundo natural un motivo de asombro y estudio.</p>
+                
+                <p>Los bosques, con su diversidad de especies, nos enseñan sobre cooperación y competencia. Los ríos, con su flujo constante, nos recuerdan que todo en la vida está en movimiento. Las montañas, con su imponente presencia, nos muestran la perseverancia a través del tiempo.</p>
+                
+                <p>En la actualidad, enfrentamos el desafío de proteger estos ecosistemas mientras mantenemos nuestro desarrollo como civilización. Este equilibrio es delicado y requiere de nuestra atención constante. La conservación no es solo un acto de preservación, sino también de respeto hacia las generaciones futuras que merecen conocer la belleza natural que nosotros hemos disfrutado.</p>
+                
+                <p>La conexión entre humanos y naturaleza es fundamental para nuestro bienestar psicológico y físico. Estudios han demostrado que pasar tiempo en entornos naturales reduce el estrés, mejora la concentración y promueve una sensación general de bienestar. Esta conexión va más allá del simple disfrute estético; es una necesidad humana básica que a menudo descuidamos en nuestro estilo de vida moderno.</p>
+                
+                <p>Cada especie, desde la más pequeña bacteria hasta el más grande mamífero, juega un papel en el delicado equilibrio de los ecosistemas. La pérdida de biodiversidad no solo es una tragedia en sí misma, sino que también amenaza la estabilidad de los sistemas naturales de los que dependemos para nuestra supervivencia.</p>
+                
+                <p>La educación ambiental es clave para cambiar nuestra relación con el planeta. Aprender sobre los ecosistemas locales, las especies nativas y los ciclos naturales nos ayuda a tomar decisiones más informadas en nuestra vida diaria. Pequeñas acciones, como reducir nuestro consumo, reciclar adecuadamente y apoyar iniciativas de conservación, pueden tener un impacto significativo cuando se multiplican por millones de personas.</p>
+                
+                <p>Mirando hacia el futuro, es esencial que integremos la sostenibilidad en todos los aspectos de nuestra sociedad. Desde la arquitectura y la agricultura hasta la energía y el transporte, necesitamos reinventar nuestros sistemas para que funcionen en armonía con la naturaleza en lugar de en su contra.</p>
+                
+                <p>Este viaje de reconexión con el mundo natural comienza con pequeños pasos: observar con atención, aprender con humildad y actuar con responsabilidad. Cada uno de nosotros tiene un papel que desempeñar en la creación de un futuro más sostenible y equilibrado.</p>
+            </div>
+        </section>
+
+        <section class="comentarios">
+            <h2>Deja tu Comentario</h2>
+            <p>Comparte tus pensamientos sobre este artículo. Nos encantaría conocer tu perspectiva.</p>
+            
+            <form id="formulario-comentario">
+                <div class="grupo-formulario">
+                    <label for="nombre">Nombre:</label>
+                    <input type="text" id="nombre" name="nombre" required>
+                    <span class="mensaje-error" id="error-nombre"></span>
+                </div>
+                
+                <div class="grupo-formulario">
+                    <label for="correo">Correo electrónico:</label>
+                    <input type="email" id="correo" name="correo" required>
+                    <span class="mensaje-error" id="error-correo"></span>
+                </div>
+                
+                <div class="grupo-formulario">
+                    <label for="comentario">Comentario:</label>
+                    <textarea id="comentario" name="comentario" rows="5" required></textarea>
+                    <span class="mensaje-error" id="error-comentario"></span>
+                </div>
+                
+                <div class="grupo-formulario">
+                    <button type="submit" id="enviar-comentario">Enviar Comentario</button>
+                    <button type="button" id="limpiar-formulario">Limpiar Formulario</button>
+                </div>
+            </form>
+            
+            <div id="comentarios-publicados">
+                <h3>Comentarios Recientes</h3>
+                <div id="lista-comentarios">
+                    <p class="sin-comentarios">No hay comentarios aún. ¡Sé el primero en comentar!</p>
+                </div>
+            </div>
+        </section>
+    </main>
+
+    <footer>
+        <div class="contenido-footer">
+            <div class="info-footer">
+                <h3>Créditos</h3>
+                <p>© 2023 Mi Página Web Personal. Todos los derechos reservados.</p>
+                <p>Diseño y desarrollo: <span id="credito-nombre">Tu Nombre Aquí</span></p>
+                <p>Foto por: <a href="https://unsplash.com" target="_blank">Unsplash</a></p>
+            </div>
+            
+            <div class="enlaces-footer">
+                <h3>Enlaces Rápidos</h3>
+                <ul>
+                    <li><a href="#">Inicio</a></li>
+                    <li><a href="#">Sobre mí</a></li>
+                    <li><a href="#">Contacto</a></li>
+                    <li><a href="#">Política de privacidad</a></li>
+                </ul>
+            </div>
+            
+            <div class="contacto-footer">
+                <h3>Contacto</h3>
+                <p>Email: <span id="credito-email">tuemail@ejemplo.com</span></p>
+                <p>Teléfono: +1 234 567 8900</p>
+            </div>
+        </div>
+        
+        <div class="derechos-footer">
+            <p>Esta página fue creada con HTML, CSS y JavaScript. Todos los derechos reservados.</p>
+        </div>
+    </footer>
+
+    <script src="script.js"></script>
+</body>
+</html>
 
