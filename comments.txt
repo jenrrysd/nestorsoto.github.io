@@ -1,0 +1,20 @@
+[
+  {
+    "nombre": "luis",
+    "correo": "dextreluis@yahoo.com",
+    "texto": "hola espero que esto funcione",
+    "fecha": "2026-01-11T07:48:30.007Z"
+  },
+  {
+    "nombre": "Ana García",
+    "correo": "ana@ejemplo.com",
+    "texto": "Excelente reflexión sobre la importancia de conservar nuestro planeta. Me ha hecho pensar en cómo puedo contribuir más activamente.",
+    "fecha": "2023-10-15T09:30:00.000Z"
+  },
+  {
+    "nombre": "Carlos López",
+    "correo": "carlos@ejemplo.com",
+    "texto": "La conexión entre bienestar mental y naturaleza es algo que he experimentado personalmente. Salir a caminar al aire libre siempre mejora mi estado de ánimo.",
+    "fecha": "2023-10-14T16:45:00.000Z"
+  }
+]

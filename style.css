@@ -58,8 +58,31 @@ header p {
     width: 100%;
     height: auto;
     display: block;
-    max-height: 500px;
-    object-fit: cover;
+    /* Limita la altura para que la imagen no ocupe toda la pantalla
+       y mantener la proporción. Usamos unidades relativas para ser responsivos. */
+    max-height: 60vh;
+    object-fit: contain;
+    object-position: center;
+}
+
+/* Estilos para ampliación con doble click */
+.imagen-contenedor {
+    transition: all 0.25s ease;
+}
+.imagen-contenedor.ampliada {
+    overflow: visible; /* permitir que la imagen crezca fuera del contenedor */
+}
+.imagen-contenedor img.ampliada-img {
+    transform: scale(1.30);
+    transition: transform 0.25s ease;
+    cursor: zoom-out;
+    box-shadow: 0 20px 40px rgba(0,0,0,0.35);
+    z-index: 40;
+    position: relative;
+}
+.imagen-contenedor img {
+    transition: transform 0.25s ease, box-shadow 0.25s ease;
+    backface-visibility: hidden;
 }
 
 .descripcion-imagen {
@@ -246,7 +269,8 @@ footer {
 .info-footer h3,
 .enlaces-footer h3,
 .contacto-footer h3 {
-    color: #3498db;
+    /* Color claro para buen contraste sobre el fondo oscuro del footer */
+    color: #ecf0f1;
     margin-bottom: 1rem;
     font-size: 1.2rem;
 }
@@ -272,6 +296,18 @@ footer {
 
 .enlaces-footer a:hover {
     color: #3498db;
+}
+
+/* Estilo específico para el enlace del sitio web (celeste + hover) */
+.sitio-externo {
+    color: #00bfff; /* celeste */
+    text-decoration: none;
+    transition: color 0.2s ease;
+}
+.sitio-externo:hover,
+.sitio-externo:focus {
+    color: #1e90ff; /* color al pasar el mouse */
+    text-decoration: underline;
 }
 
 .contacto-footer p {

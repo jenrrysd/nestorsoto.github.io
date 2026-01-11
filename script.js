@@ -14,7 +14,7 @@ document.addEventListener('DOMContentLoaded', function() {
     const errorCorreo = document.getElementById('error-correo');
     const errorComentario = document.getElementById('error-comentario');
     
-    // Comentarios de ejemplo (normalmente vendrían de un servidor)
+    // Comentarios (se cargarán desde el servidor)
     let comentarios = [];
     
     // Función para validar el correo electrónico
@@ -122,61 +122,64 @@ document.addEventListener('DOMContentLoaded', function() {
     // Función para manejar el envío del formulario
     function manejarEnvioFormulario(event) {
         event.preventDefault();
-        
+
         if (!validarFormulario()) {
             return;
         }
-        
+
         // Crear objeto comentario
         const nuevoComentario = {
             nombre: nombreInput.value.trim(),
             correo: correoInput.value.trim(),
-            texto: comentarioInput.value.trim(),
-            fecha: new Date().toISOString()
+            texto: comentarioInput.value.trim()
         };
-        
-        // Agregar a la lista de comentarios
-        comentarios.unshift(nuevoComentario);
-        
-        // Agregar a la visualización
-        agregarComentarioALista(nuevoComentario);
-        
-        // Limpiar formulario después de enviar
-        limpiarFormulario();
-        
-        // Mostrar mensaje de éxito
-        alert('¡Comentario enviado con éxito! Gracias por compartir tu opinión.');
+
+        // Enviar al servidor
+        fetch('/comments', {
+            method: 'POST',
+            headers: { 'Content-Type': 'application/json' },
+            body: JSON.stringify(nuevoComentario)
+        })
+        .then(response => {
+            if (!response.ok) throw new Error('Error al guardar comentario');
+            return response.json();
+        })
+        .then(saved => {
+            // Agregar a la visualización
+            agregarComentarioALista(saved);
+            // Limpiar formulario después de enviar
+            limpiarFormulario();
+            // Mostrar mensaje de éxito
+            alert('¡Comentario enviado con éxito! Gracias por compartir tu opinión.');
+        })
+        .catch(err => {
+            console.error(err);
+            alert('Error al enviar comentario. Intenta nuevamente.');
+        });
     }
     
-    // Agregar algunos comentarios de ejemplo
-    function agregarComentariosEjemplo() {
-        const comentariosEjemplo = [
-            {
-                nombre: "Ana García",
-                correo: "ana@ejemplo.com",
-                texto: "Excelente reflexión sobre la importancia de conservar nuestro planeta. Me ha hecho pensar en cómo puedo contribuir más activamente.",
-                fecha: "2023-10-15T09:30:00"
-            },
-            {
-                nombre: "Carlos López",
-                correo: "carlos@ejemplo.com",
-                texto: "La conexión entre bienestar mental y naturaleza es algo que he experimentado personalmente. Salir a caminar al aire libre siempre mejora mi estado de ánimo.",
-                fecha: "2023-10-14T16:45:00"
-            }
-        ];
-        
-        comentarios = comentariosEjemplo;
-        
-        // Agregar cada comentario a la lista
-        comentarios.forEach(comentario => {
-            agregarComentarioALista(comentario);
-        });
+    // Cargar comentarios desde el servidor
+    function cargarComentariosServidor() {
+        fetch('/comments')
+            .then(response => {
+                if (!response.ok) throw new Error('No se pudieron cargar los comentarios');
+                return response.json();
+            })
+            .then(data => {
+                comentarios = data || [];
+                comentarios.forEach(comentario => {
+                    agregarComentarioALista(comentario);
+                });
+            })
+            .catch(err => {
+                console.error('Error al cargar comentarios:', err);
+            });
     }
     
     // Inicializar la página
     function inicializar() {
-        // Agregar comentarios de ejemplo
-        agregarComentariosEjemplo();
+        // Cargar comentarios desde el servidor
+        cargarComentariosServidor();
         
         // Asignar eventos
         formulario.addEventListener('submit', manejarEnvioFormulario);
@@ -209,8 +212,36 @@ document.addEventListener('DOMContentLoaded', function() {
         const creditoEmail = document.getElementById('credito-email');
         
         // Puedes cambiar estos valores por los tuyos
-        creditoNombre.textContent = "Tu Nombre Aquí";
-        creditoEmail.textContent = "tuemail@ejemplo.com";
+        creditoNombre.textContent = "Jenrry Soto Dextre";
+        creditoEmail.textContent = "dextre1481@gmail.com";
+
+        // Doble click para ampliar la imagen principal
+        const imagenPrincipal = document.getElementById('imagen-principal');
+        const contenedorImagen = document.querySelector('.imagen-contenedor');
+
+        function quitarAmpliacion() {
+            if (contenedorImagen) contenedorImagen.classList.remove('ampliada');
+            if (imagenPrincipal) imagenPrincipal.classList.remove('ampliada-img');
+        }
+
+        function toggleAmpliacion(e) {
+            if (!imagenPrincipal || !contenedorImagen) return;
+            contenedorImagen.classList.toggle('ampliada');
+            imagenPrincipal.classList.toggle('ampliada-img');
+        }
+
+        if (imagenPrincipal && contenedorImagen) {
+            imagenPrincipal.style.cursor = 'zoom-in';
+            imagenPrincipal.addEventListener('dblclick', toggleAmpliacion);
+            // permitir también cerrar al hacer doble click fuera de la imagen (en el contenedor)
+            contenedorImagen.addEventListener('dblclick', function(e) {
+                if (e.target === contenedorImagen) quitarAmpliacion();
+            });
+            // cerrar con Escape
+            document.addEventListener('keydown', function(e) {
+                if (e.key === 'Escape') quitarAmpliacion();
+            });
+        }
     }
     
     // Ejecutar inicialización cuando el DOM esté listo
