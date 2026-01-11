@@ -19,7 +19,7 @@ document.addEventListener('DOMContentLoaded', function() {
 
     // URL del WebApp de Google Apps Script (despliega el Apps Script y pega aquí la URL)
     // Ejemplo: https://script.google.com/macros/s/AKfycb.../exec
-    const WEBAPP_URL = 'REPLACE_WITH_YOUR_GOOGLE_WEBAPP_URL';
+    const WEBAPP_URL = 'https://script.google.com/macros/s/AKfycbwbZ294fjs8RhxgX0V6zy4mt_U7GljzLGC2x9BRxfE4OxVWBJlVmF-wkDeZfOju9Rzc9Q/exec';
     
     // Función para validar el correo electrónico
     function validarCorreo(correo) {
@@ -215,6 +215,7 @@ document.addEventListener('DOMContentLoaded', function() {
         });
         
         comentarioInput.addEventListener('input', function() {
+
             if (comentarioInput.value.trim() !== '' && comentarioInput.value.trim().length >= 10) {
                 errorComentario.textContent = '';
                 comentarioInput.style.borderColor = '#ddd';
