@@ -16,6 +16,10 @@ document.addEventListener('DOMContentLoaded', function() {
     
     // Comentarios (se cargarán desde el servidor)
     let comentarios = [];
+
+    // URL del WebApp de Google Apps Script (despliega el Apps Script y pega aquí la URL)
+    // Ejemplo: https://script.google.com/macros/s/AKfycb.../exec
+    const WEBAPP_URL = 'REPLACE_WITH_YOUR_GOOGLE_WEBAPP_URL';
     
     // Función para validar el correo electrónico
     function validarCorreo(correo) {
@@ -134,8 +138,13 @@ document.addEventListener('DOMContentLoaded', function() {
             texto: comentarioInput.value.trim()
         };
 
-        // Enviar al servidor
-        fetch('/comments', {
+        // Enviar al WebApp de Google (o avisar si no está configurado)
+        if (WEBAPP_URL.indexOf('REPLACE_WITH') !== -1) {
+            alert('Aún no se ha configurado la URL del WebApp de Google. Sigue las instrucciones en README para desplegarlo y actualizar `script.js`.');
+            return;
+        }
+
+        fetch(WEBAPP_URL, {
             method: 'POST',
             headers: { 'Content-Type': 'application/json' },
             body: JSON.stringify(nuevoComentario)
@@ -160,7 +169,12 @@ document.addEventListener('DOMContentLoaded', function() {
     
     // Cargar comentarios desde el servidor
     function cargarComentariosServidor() {
-        fetch('/comments')
+        if (WEBAPP_URL.indexOf('REPLACE_WITH') !== -1) {
+            console.warn('WEBAPP_URL no está configurada. Los comentarios remotos no se cargarán.');
+            return;
+        }
+
+        fetch(WEBAPP_URL + '?action=list')
             .then(response => {
                 if (!response.ok) throw new Error('No se pudieron cargar los comentarios');
                 return response.json();
