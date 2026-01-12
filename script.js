@@ -144,11 +144,15 @@ document.addEventListener('DOMContentLoaded', function() {
             return;
         }
 
-        fetch(WEBAPP_URL, {
-            method: 'POST',
-            headers: { 'Content-Type': 'application/json' },
-            body: JSON.stringify(nuevoComentario)
-        })
+        // Enviar usando GET a doGet?action=add (Apps Script soporta `action=add`)
+        const params = new URLSearchParams({
+            action: 'add',
+            nombre: nuevoComentario.nombre,
+            correo: nuevoComentario.correo,
+            texto: nuevoComentario.texto
+        });
+
+        fetch(WEBAPP_URL + '?' + params.toString())
         .then(response => {
             if (!response.ok) throw new Error('Error al guardar comentario');
             return response.json();
