@@ -119,8 +119,20 @@ document.addEventListener('DOMContentLoaded', function() {
             <div class="comentario-texto">${comentario.texto}</div>
         `;
         
-        // Agregar al principio de la lista
+        // Agregar al principio de la lista (usado para inserciones individuales)
         listaComentarios.prepend(comentarioDiv);
+    }
+
+    // Crear elemento de comentario (para renderizado controlado)
+    function crearElementoComentario(comentario) {
+        const comentarioDiv = document.createElement('div');
+        comentarioDiv.className = 'comentario-item';
+        comentarioDiv.innerHTML = `
+            <div class="comentario-autor">${comentario.nombre}</div>
+            <div class="comentario-fecha">${formatearFecha(comentario.fecha)}</div>
+            <div class="comentario-texto">${comentario.texto}</div>
+        `;
+        return comentarioDiv;
     }
     
     // Función para manejar el envío del formulario
@@ -200,8 +212,11 @@ document.addEventListener('DOMContentLoaded', function() {
                 comentarios = data || [];
                 // Limpiar lista antes de renderizar
                 listaComentarios.innerHTML = '';
+                // Asegurar orden: el servidor devuelve newest->oldest.
+                // Appending mantiene ese orden con el más reciente arriba.
                 comentarios.forEach(function(comentario) {
-                    agregarComentarioALista(comentario);
+                    const el = crearElementoComentario(comentario);
+                    listaComentarios.appendChild(el);
                 });
             } catch (e) {
                 console.error('Error procesando comentarios JSONP:', e);
