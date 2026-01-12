@@ -152,29 +152,36 @@ document.addEventListener('DOMContentLoaded', function() {
             texto: nuevoComentario.texto
         });
 
-        fetch(WEBAPP_URL + '?' + params.toString())
-        .then(response => {
-            // Intentar leer JSON si está disponible
+        // Enviar usando JSONP para evitar bloqueos CORS en algunos despliegues
+        const addCallback = 'handleAddJSONP_' + Date.now();
+        window[addCallback] = function(result) {
             try {
-                return response.json();
+                // Refrescar la lista de comentarios y limpiar el formulario
+                cargarComentariosServidor();
+                limpiarFormulario();
+                alert('¡Comentario enviado con éxito! Gracias por compartir tu opinión.');
             } catch (e) {
-                return null;
+                console.error('Error en callback JSONP add:', e);
+            } finally {
+                // limpiar
+                delete window[addCallback];
+                const sc = document.getElementById(addCallback + '-script');
+                if (sc && sc.parentNode) sc.parentNode.removeChild(sc);
             }
-        })
-        .then(saved => {
-            // Refrescar la lista de comentarios (usando JSONP)
-            cargarComentariosServidor();
-            // Limpiar formulario después de enviar
-            limpiarFormulario();
-            // Mostrar mensaje de éxito
-            alert('¡Comentario enviado con éxito! Gracias por compartir tu opinión.');
-        })
-        .catch(err => {
-            console.error(err);
-            // Aun si hubo error, intentar recargar la lista
+        };
+
+        const scriptAdd = document.createElement('script');
+        scriptAdd.id = addCallback + '-script';
+        scriptAdd.src = WEBAPP_URL + '?' + params.toString() + '&callback=' + addCallback;
+        scriptAdd.onerror = function(e) {
+            console.error('Error al enviar comentario (JSONP):', e);
+            delete window[addCallback];
+            if (scriptAdd.parentNode) scriptAdd.parentNode.removeChild(scriptAdd);
+            // Intentar recargar la lista de todas formas
             cargarComentariosServidor();
             alert('Error al enviar comentario. Intenta nuevamente.');
-        });
+        };
+        document.head.appendChild(scriptAdd);
     }
     
     // Cargar comentarios desde el servidor
