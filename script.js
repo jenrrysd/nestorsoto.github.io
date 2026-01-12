@@ -154,12 +154,16 @@ document.addEventListener('DOMContentLoaded', function() {
 
         fetch(WEBAPP_URL + '?' + params.toString())
         .then(response => {
-            if (!response.ok) throw new Error('Error al guardar comentario');
-            return response.json();
+            // Intentar leer JSON si está disponible
+            try {
+                return response.json();
+            } catch (e) {
+                return null;
+            }
         })
         .then(saved => {
-            // Agregar a la visualización
-            agregarComentarioALista(saved);
+            // Refrescar la lista de comentarios (usando JSONP)
+            cargarComentariosServidor();
             // Limpiar formulario después de enviar
             limpiarFormulario();
             // Mostrar mensaje de éxito
@@ -167,6 +171,8 @@ document.addEventListener('DOMContentLoaded', function() {
         })
         .catch(err => {
             console.error(err);
+            // Aun si hubo error, intentar recargar la lista
+            cargarComentariosServidor();
             alert('Error al enviar comentario. Intenta nuevamente.');
         });
     }
@@ -178,20 +184,38 @@ document.addEventListener('DOMContentLoaded', function() {
             return;
         }
 
-        fetch(WEBAPP_URL + '?action=list')
-            .then(response => {
-                if (!response.ok) throw new Error('No se pudieron cargar los comentarios');
-                return response.json();
-            })
-            .then(data => {
+        // Usar JSONP para evitar bloqueos CORS en `action=list`.
+        const callbackName = 'handleComentariosJSONP';
+
+        // Definir handler global temporal
+        window[callbackName] = function(data) {
+            try {
                 comentarios = data || [];
-                comentarios.forEach(comentario => {
+                // Limpiar lista antes de renderizar
+                listaComentarios.innerHTML = '';
+                comentarios.forEach(function(comentario) {
                     agregarComentarioALista(comentario);
                 });
-            })
-            .catch(err => {
-                console.error('Error al cargar comentarios:', err);
-            });
+            } catch (e) {
+                console.error('Error procesando comentarios JSONP:', e);
+            } finally {
+                // limpiar handler y script
+                delete window[callbackName];
+                const s = document.getElementById(callbackName + '-script');
+                if (s && s.parentNode) s.parentNode.removeChild(s);
+            }
+        };
+
+        const script = document.createElement('script');
+        script.id = callbackName + '-script';
+        script.src = WEBAPP_URL + '?action=list&callback=' + callbackName;
+        script.onerror = function(e) {
+            console.error('Error al cargar comentarios (JSONP):', e);
+            // cleanup
+            delete window[callbackName];
+            if (script.parentNode) script.parentNode.removeChild(script);
+        };
+        document.head.appendChild(script);
     }
     
     // Inicializar la página
