@@ -19,7 +19,7 @@ document.addEventListener('DOMContentLoaded', function() {
 
     // URL del WebApp de Google Apps Script (despliega el Apps Script y pega aquí la URL)
     // Ejemplo: https://script.google.com/macros/s/AKfycb.../exec
-    const WEBAPP_URL = 'https://script.google.com/macros/s/AKfycbw5HpLqLmH_Lh-szV-a2bYjG8b3Xc2epePSliSg3y_AEnPrRhRAKrcuGRp9L5kNt7_G-g/exec';
+    const WEBAPP_URL = 'https://script.google.com/macros/s/AKfycbx81U00VpQ8eTMY8pqh9k6GOMpkTCryUFp8Ocnl7e0a4Qy5hMOBzjJ83CwJFceY6lg_DA/exec';
     
     // Función para validar el correo electrónico
     function validarCorreo(correo) {
