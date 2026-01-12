@@ -192,7 +192,7 @@ document.addEventListener('DOMContentLoaded', function() {
         }
 
         // Usar JSONP para evitar bloqueos CORS en `action=list`.
-        const callbackName = 'handleComentariosJSONP';
+        const callbackName = 'handleComentariosJSONP_' + Date.now();
 
         // Definir handler global temporal
         window[callbackName] = function(data) {
@@ -215,9 +215,15 @@ document.addEventListener('DOMContentLoaded', function() {
 
         const script = document.createElement('script');
         script.id = callbackName + '-script';
-        script.src = WEBAPP_URL + '?action=list&callback=' + callbackName;
+        script.async = true;
+        const src = WEBAPP_URL + '?action=list&callback=' + encodeURIComponent(callbackName) + '&_=' + Date.now();
+        script.src = src;
+        script.onload = function() {
+            // cargado correctamente (el callback gestionará los datos)
+            // console.log('JSONP script loaded:', src);
+        };
         script.onerror = function(e) {
-            console.error('Error al cargar comentarios (JSONP):', e);
+            console.error('Error al cargar comentarios (JSONP):', e, 'src=', src);
             // cleanup
             delete window[callbackName];
             if (script.parentNode) script.parentNode.removeChild(script);
